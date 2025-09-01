@@ -1,0 +1,56 @@
+modules = ["nodejs-20"]
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "PeeringDB MCP Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "peeringdb_mcp_server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "PeeringDB MCP Server Build"
+
+[[workflows.workflow]]
+name = "PeeringDB MCP Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node dist/index.js"
+
+[[workflows.workflow]]
+name = "peeringdb_mcp_server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install && npm run build && node dist/index.js"
+
+[[workflows.workflow]]
+name = "PeeringDB MCP Server Build"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "tsc && node dist/index.js"
+
+[workflows.workflow.metadata]
+outputType = "console"
